@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Wall</title>
+  </head>
+  <body>
+    <a href="/logout">Logout</a>
+    <h1>Post a message</h1>
+    <form class="" action="/message" method="post">
+      {% csrf_token %}
+      Message: <input type="text" name="message" value="">
+      <input type="submit" value="Post a message">
+    </form>
+
+    {% for message in messages %}
+    <p>{{message.user.first_name}} {{message.user.last_name}} - {{message.create_at}}</p>
+    <h3>{{message.message}}</h3>
+      {% for comment in message.message_comment.all %}
+        <p>{{comment.user.first_name}} {{comment.user.last_name}} - {{comment.create_at}}</p>
+        <h5>{{comment.comment}}</h5>
+      {% endfor %}
+      <form class="" action="/comment/{{message.id}}" method="post">
+        {% csrf_token %}
+        Comment: <input type="text" name="comment" value="">
+        <input type="submit" value="Post a comment">
+      </form>
+    {% endfor %}
+
+  </body>
+</html>
